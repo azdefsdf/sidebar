@@ -1,0 +1,36 @@
+<form (ngSubmit)="onSubmitInvoice()" >
+
+    <div class="form-group">
+        <label> First Name</label>
+        <input type="text" class ="form-control" id = "invoiceNumber"
+            [(ngModel)] = "invoice.invoiceNumber" name = "invoiceNumber">
+    </div>
+
+    <div class="form-group">
+        <label> Date</label>
+        <input type="text" class ="form-control" id = "invoiceDate"
+            [(ngModel)] = "invoice.invoiceDate" name = "invoiceDate">
+    </div>
+
+    <div class="form-group">
+        <label> Email Id</label>
+        <input type="text" class ="form-control" id = "deliveryAddress"
+            [(ngModel)] = "invoice.deliveryAddress" name = "deliveryAddress">
+    </div>
+    
+    <div class="form-group">
+        <label> Email Id</label>
+        <input type="text" class ="form-control" id = "totalAmount"
+            [(ngModel)] = "invoice.totalAmount" name = "totalAmount">
+    </div>
+    <div class="form-group">
+        <label> Email Id</label>
+        <input type="text" class ="form-control" id = "company"
+            [(ngModel)] = "invoice.company" name = "company">
+    </div>
+    
+    <button class = "btn btn-success" type ="submit">Submit</button>
+    
+</form>
+
+

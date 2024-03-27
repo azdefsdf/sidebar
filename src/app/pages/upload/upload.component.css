@@ -1,0 +1,267 @@
+/* You can add global styles to this file, and also import other style files */
+.card-body {
+  padding: 2rem;
+  justify-content: centers;
+}
+
+.separator {
+  width: 100%;
+  height: 2px;
+  /* Adjust height as needed */
+  background-color: #ccc;
+  /* Color of the separator */
+  margin: 20px 0;
+  /* Adjust margin as needed */
+}
+
+/* Style for the container of selected file names */
+.selected-files {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+/* Style for each selected file name */
+.selected-file {
+  margin-bottom: 5px;
+  padding: 5px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+
+
+
+/* form.component.css */
+/* form.component.css */
+/* form.component.css */
+/* form.component.css */
+
+/* table header  start */
+
+/* Animation for form title */
+.form-title {
+  color: #333;
+  font-family: 'Arial', sans-serif;
+  font-size: 20px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fade-in 1s forwards, slide-in 1s forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(-20px);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* form.component.css */
+.container-header-invoice {
+  display: flex;
+}
+
+.form-container {
+  width: 50%;
+}
+
+.image-container {
+  width: 50%;
+}
+
+/* Customize label appearance */
+.mat-form-field-label {
+  color: #333;
+  font-weight: bold;
+}
+
+/* Ensure inputs and labels are on the same line */
+.mat-form-field {
+  width: calc(100% - 16px);
+  /* Adjust for padding */
+}
+
+/* Style the input field */
+input.mat-input {
+  width: 100%;
+}
+
+/* Style the image */
+.image-container img {
+  width: 100%;
+  height: auto;
+}
+
+/* table header  END */
+/* table header  END */
+/* table header  END */
+/* table header  END */
+
+
+
+/* table   START */
+/* table   START */
+/* table   START */
+/* table   START */
+
+.progress-bar {
+  padding: 0;
+}
+
+.progress {
+  width: 50px;
+}
+
+.mat-input-element {
+  font-size: medium;
+  font-weight: 200;
+}
+
+#fileInput {
+  position: absolute;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+}
+
+.mat-toolbar-single-row {
+  height: auto !important;
+  background: transparent;
+  padding: 0;
+}
+
+.mat-toolbar-single-row button {
+  width: 100px;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.message {
+  background-color: #ddd;
+  padding: 15px;
+  color: #333;
+  border: #aaa solid 1px;
+  border-radius: 4px;
+  margin: 15px 0;
+}
+
+.preview {
+  max-width: 200px;
+  vertical-align: middle;
+}
+
+.list-card {
+  margin-top: 20px;
+}
+
+.list-item {
+  margin-bottom: 20px;
+}
+
+/* table.component.css */
+/* table.component.css */
+
+
+
+
+/* table.component.css */
+
+
+
+/* Only the modified part */
+.invoice-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-row, .body-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.header-cell, .body-cell {
+  padding: 5px;
+  border: 1px solid #ccc;
+}
+
+.header-cell {
+  font-weight: bold;
+}
+
+
+
+/* table   END */
+/* table   END */
+section {
+  display: table;
+}
+
+
+.example-button-row {
+  display: table-cell;
+  max-width: 600px;
+}
+
+.example-button-row .mat-mdc-button-base {
+  margin: 8px 8px 8px 0;
+}
+/* Centering the buttons within the toolbar */
+.button-container {
+  display: flex;
+  justify-content: center; /* Evenly distribute buttons */
+  width: 100%; /* Ensure buttons fill the toolbar width */
+}
+
+/* Styling the buttons and their icons */
+.styled-button {
+  border: none; /* Remove default button border */
+  color: inherit; /* Inherit toolbar text color */
+  padding: 0 10px; /* Adjust padding as desired */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out; /* Smooth hover effect */
+  margin: 8px 8px 8px 0;
+  display: flex; /* Allow icon and text to align horizontally */
+  align-items: center; /* Vertically align content within the button */
+}
+
+.styled-button mat-icon {
+  margin-right: 10px; /* Add spacing between icon and text */
+}
+
+/* Hover effect (adjust colors as preferred) */
+
+/* Button animation (optional) */
+.styled-button:active {
+  transform: scale(0.95); /* Slight scale down on click */
+}
+
+
+/* table   END */
+/* table   END */
+
+.mat-toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+

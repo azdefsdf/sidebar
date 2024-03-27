@@ -1,0 +1,20 @@
+<p>my-shared works!</p>
+
+    <div class="separator"></div>
+
+
+<div class="invoice-table" >   
+      
+        <div class="header d-flex" >
+            <div class="header-item" *ngFor="let name of responseData.Documents[0].DocumentData.Fields[4].Rows[0].Columns">
+                <div>{{name.Name}}</div>
+            </div>
+        </div>
+
+        <div class="body" >
+            <div class="body-item" *ngFor="let row of responseData.Documents[0].DocumentData.Fields[4].Rows">
+                <div *ngFor="let column of row.Columns">{{column.Value}}</div>
+            </div>
+        </div>
+   
+</div>

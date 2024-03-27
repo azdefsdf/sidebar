@@ -1,0 +1,138 @@
+.label-header {
+  /* Centering */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Font Styling */
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+
+  /* Hover Animation */
+  transition: all 0.3s ease-in-out;
+  animation: letter-dance 1s infinite alternate;
+  animation: text-glow 2s infinite alternate;
+  background-color: #f5f5f5;
+  animation: background-gradient 3s infinite alternate;
+}
+
+.label-header:hover {
+  color: #096eda;
+  text-shadow: 0 0 5px rgba(127, 202, 234, 0.2);
+  transform: scale(1.02);
+}
+
+
+@keyframes text-glow {
+  from {
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
+
+  to {
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+}
+
+
+
+@keyframes background-gradient {
+  from {
+    background-color: #eee;
+  }
+
+  to {
+    background-color: #f5f5f5;
+  }
+}
+
+@keyframes letter-dance {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(5px);
+  }
+}
+
+/* Set text and logo style */
+
+.main-dashboard .logo {
+  position: absolute;
+  width: 185px;
+  height: 36px;
+  top: 11px;
+  left: 2px;
+}
+
+.main-dashboard .iconfinder-vector {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  top: 0;
+  left: 0;
+  background-image: url(../assets/iconfinder-vector-65-09-473792-1.png);
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.main-dashboard .text-wrapper-2 {
+  position: absolute;
+  top: 4px;
+  left: 45px;
+  font-family: "Mont-HeavyDEMO", Helvetica;
+  letter-spacing: 0;
+  line-height: normal;
+  font-size: 20px;
+  /* Adjust font size as desired */
+  font-weight: bold;
+  /*Make the text bold */
+  color: #333;
+  /* Set text color */
+
+  /* Hover Animation */
+  transition: all 0.3s ease-in-out;
+  /* Smooth transition on hover */
+}
+
+.main-dashboard .text-wrapper-2:hover {
+  color: #007bff;
+  /* Change text color on hover */
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  /* Subtle text shadow */
+  transform: scale(1.02);
+  /* Slight zoom effect (optional) */
+
+}
+
+
+
+.main-dashboard .div {
+  position: absolute;
+  width: 1112px;
+  height: 60px;
+  top: 0;
+  left: 252px;
+
+}
+
+
+
+mat-toolbar {
+  justify-content: center;
+  background-color: whitesmoke;
+  color: black;
+  position: relative;
+  z-index: 5;
+}
+
+.content {
+  padding: 24px;
+}
+
+mat-sidenav-container {
+  height: calc(100vh - 64px);
+
+}
