@@ -1,92 +1,55 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import PSPDFKit from 'pspdfkit';
-import { UploadService } from '../../upload.service';
-import { HttpClient } from '@angular/common/http';
-import { Data } from '../../data';
 import {  RouterModule } from '@angular/router';
-import { NgIf, NgFor } from '@angular/common';
-import { MySharedComponent } from '../../my-shared/my-shared.component';
-import { HttpClientModule, provideHttpClient } from '@angular/common/http';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
-import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatIconModule } from '@angular/material/icon';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatDividerModule} from '@angular/material/divider';
-import { DatabaseService } from '../../database.service';
+import { DoneService } from '../../done.service';
+import { Data } from '../../data';
 import { Invoice } from '../../Invoice';
-
+import { Document } from '../../Document';
+import { HttpClientModule } from '@angular/common/http';
+import { MatTableModule } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { ProgressService } from '../../progress.service';
 
 @Component({
   selector: 'app-progress',
   standalone: true,
-  imports: [NgIf,
-    PdfViewerModule,
-    NgFor,
-    RouterModule,
-    MySharedComponent,
-    HttpClientModule,
-    MatRadioModule,
-    MatCardModule,
-    MatInputModule,
-    MatButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    PdfViewerModule,
-    MatCardModule,
-    MatIconModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatSlideToggleModule,
-    MatTabsModule,
-    MatTooltipModule,
-    MatDividerModule,],
+  imports: [
+    RouterModule,HttpClientModule, MatTableModule, DatePipe, MatButtonModule
+],
   templateUrl: './progress.component.html',
   styleUrl: './progress.component.css'
 })
 
 
-export class ProgressComponent  implements OnInit {
+export class ProgressComponent implements OnInit {
+  completedDocuments: Document[] = [];
+  displayedColumns: string[] = ['id', 'documentId', 'status', 'userId', 'createdAt', 'updatedAt', 'action'];
 
 
-
-	constructor(
-	  private http: HttpClient,
-	  private uploadService: UploadService,
-	  private router: Router
-	) { }
-  
-  invoice: Invoice = new Invoice();
+  constructor(private progressService: ProgressService) { }
 
   ngOnInit(): void {
+    this.getWaitingDocuments();
   }
 
-  saveInvoice(){
-    this.uploadService.createInvoices(this.invoice).subscribe( data =>{
-      console.log(data);
-      this.goToInvoiceList();
-    },
-    error => console.log(error));
-  }
-
-  goToInvoiceList(){
-    this.router.navigate(['/done']);
-  }
-  
-  onSubmitInvoice(){
-    console.log(this.invoice);
-    this.saveInvoice();
+  getWaitingDocuments(): void {
+    this.progressService.getWaitingDocuments().subscribe(
+      (documents) => {
+        this.completedDocuments = documents;
+        console.log('Completed documents:', documents);
+      },
+      (error) => {
+        console.error('Error fetching completed documents:', error);
+        // Handle errors
+      }
+    );
   }
 
 
-
+  consultDocument(element: any): void {
+    // Implement the logic to consult the document
+    console.log('Consulting document:', document);
+    // You can navigate to a new page or display additional information about the document
+  }
 
 }
