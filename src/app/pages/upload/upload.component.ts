@@ -22,6 +22,7 @@ import { DatabaseService } from '../../database.service';
 import { Data } from '../../data';
 import { Invoice } from '../../Invoice';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Document } from '../../Document';
 
 @Component({
   selector: 'app-upload',
@@ -65,6 +66,7 @@ export class UploadComponent implements OnInit {
   loading = false;
   responseData: any;
   responseDataPdf: any;
+  responseDocumentId: any;
   selectedFiles: File[] = [];
   currentStep: string = 'Uploading images';
   processingCompleted = false;
@@ -102,7 +104,6 @@ export class UploadComponent implements OnInit {
       this.uploadService.createInvoices(invoiceData).subscribe(
         (data) => {
           console.log(data);
-          this.goToInvoiceList();
         },
         (error) => {
           console.error('Error creating invoice:', error);
@@ -117,6 +118,9 @@ export class UploadComponent implements OnInit {
 
   goToInvoiceList(){
     this.router.navigate(['/done']);
+  }
+  goToInvoiceLists(){
+    this.router.navigate(['/progress']);
   }
 
   onFileSelected(event: any) {
@@ -165,9 +169,12 @@ export class UploadComponent implements OnInit {
 		this.uploadService.fetchPdfData(formDatas).subscribe(
 		  response => {
 			this.responseDataPdf = response;
+      this.responseDocumentId = response.filename;
+      this.uploadService.setDocumentId ( response.filename);
+
 			console.log(response);
 			// Show a message in the specified section
-
+      console.log(this.responseDocumentId);
 
       // Decode the base64 string
       const binaryData = atob(this.responseDataPdf.pdfData);
@@ -192,7 +199,40 @@ export class UploadComponent implements OnInit {
 	  }
 
 
+    validateDocument(): void {
+      const document = new Document(this.uploadService.getDocumentId(),'Done'); // Create a new document instance
+      
+      this.uploadService.validateDocument(document).subscribe(
+        (response) => {
 
+          console.log('Document validated successfully:', response);
+          this.saveInvoice(); // Proceed to save the invoice after validation
+          this.goToInvoiceList();
+        },
+        (error) => {
+          console.error('Error validating document:', error);
+        }
+      );
+    }
+    
+
+// Method to reject a document
+rejectDocument(): void {
+  const document = new Document(this.uploadService.getDocumentId(),'Waiting'); // Create a new document instance
+  
+  this.uploadService.rejectDocument(document).subscribe(
+    (response) => {
+
+      console.log('Document Rejected successfully:', response);
+      this.saveInvoice(); // Proceed to save the invoice after rejection
+      this.goToInvoiceLists();
+
+    },
+    (error) => {
+      console.error('Error Rejecting document:', error);
+    }
+  );
+}
 
 
 

@@ -86,7 +86,7 @@
             </form> -->
 
                  <div>
-                    <form [formGroup]="invoiceForm"  (ngSubmit) = "saveInvoice()">
+                    <form [formGroup]="invoiceForm"  >
 
                         <mat-form-field class="invoice-field">
                           <mat-label>Invoice Number</mat-label>
@@ -113,22 +113,10 @@
                           <input matInput type="text" [(ngModel)]="responseData.Documents[0].DocumentData.Fields[4].Value" formControlName="company" id="company" name="company" >
                         </mat-form-field>
                       
-                        <mat-toolbar color="primary">
-                            <div class="button-container">
-                                <button mat-raised-button color="primary" matTooltip="Valid information" class="styled-button" type="submit">
-                                    <mat-icon>check</mat-icon>
-                                    Validate
-                                  </button>
-                                <button mat-raised-button color="warn" matTooltip="Reject Document" class="styled-button">
-                                    <mat-icon>close</mat-icon>
-                                    Reject
-                                </button>
-                            </div>
-                        </mat-toolbar>
+
                       </form>
                       
                 </div>
-
 
             <div class="separator"></div>
 
@@ -165,5 +153,16 @@
 
 
     </div>
-
+    <mat-toolbar color="primary">
+        <div class="button-container">
+            <button mat-raised-button color="primary" type="submit" matTooltip="Valid information" class="styled-button" (click)="validateDocument()">
+                <mat-icon>check</mat-icon>
+                Validate
+              </button>
+            <button mat-raised-button color="warn" type="submit" matTooltip="Reject Document" class="styled-button" (click)="rejectDocument()">
+                <mat-icon>close</mat-icon>
+                Reject
+            </button>
+        </div>
+    </mat-toolbar>
 </main>

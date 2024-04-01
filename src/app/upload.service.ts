@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Data } from './data';
 import { Invoice } from './Invoice';
+import { Document } from './Document';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,12 @@ export class UploadService {
   //private baseURL = "http://192.168.36.128:8080/save";
 
   private baseURL = "http://192.168.36.128:8080/api/v1/invoices";
-
+  idDocument : any;
+  statusDocument : any;
   constructor(private http: HttpClient) { }
 
 
-  createInvoices(invoice: Invoice): Observable<Object>{
-    return this.http.post(`${this.baseURL}`, invoice);
-  }
+
   
 
 
@@ -33,7 +33,9 @@ export class UploadService {
   //sendData(data: any): Observable<any> {
    // return this.http.post<any>(this.apiUrl + '/save', data);
   //}
-  
+  createInvoices(invoice: Invoice): Observable<Object>{
+    return this.http.post(`${this.baseURL}`, invoice);
+  }
 
   submitInvoiceData(datainvoice: Data): Observable<Object>{
     return this.http.post(`${this.baseURL}`, datainvoice);
@@ -44,4 +46,27 @@ export class UploadService {
     return this.http.post<Data>(this.baseURL, data);
   }
   
+
+  validateDocument(document: Document): Observable<Document> {
+    return this.http.post<Document>(`${this.apiUrl}/documents/validate`, document);
+  }
+  
+
+// Example Angular service method to reject a document
+rejectDocument(document: Document): Observable<void> {
+  return this.http.post<void>(`${this.apiUrl}/documents/reject`,document);
+}
+
+
+setDocumentId(id:any){
+this.idDocument = id;
+}
+
+getDocumentId(){
+ return this.idDocument;
+}
+
+
+   
+
 }
