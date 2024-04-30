@@ -1,11 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
-
 
 export type MenuItem = {
   icon: string;
@@ -20,10 +19,20 @@ export type MenuItem = {
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.css'
 })
-export class SidenavComponent {
-
+export class SidenavComponent implements OnInit{
+  isLoading = false;
   isOpen = true;
   
+
+  ngOnInit() {
+    // Simulate loading logic (replace with your actual logic)
+    this.isLoading = true;
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000); // Simulate 1 second loading time
+  }
+
+
   toggleSidenav() {
     this.isOpen = !this.isOpen;
   }

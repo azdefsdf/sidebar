@@ -1,5 +1,4 @@
 <mat-toolbar class="mat-elevtion-z3">
-
 <div class="main-dashboard">
   <div class="logo">
     <div class="iconfinder-vector" ></div>
@@ -9,12 +8,40 @@
 
 <label class="label-header"> E-Banking App</label>
 
+<div mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon *ngIf="profile">{{ profile.username }}</mat-icon>
+  <button mat-icon-button *ngIf="!profile" >
+    <mat-icon>login</mat-icon>
+  </button>
+</div>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="handleLogin()">
+    <mat-icon>login</mat-icon> Login
+  </button>
+  <button mat-icon-button *ngIf="profile" >
+    <mat-icon>logout</mat-icon> {{ profile.username }}
+  </button>
+  
+</mat-menu>
+
+
 </mat-toolbar>
+
 <mat-sidenav-container>
   <mat-sidenav opened mode="side" [style.width]="'175px'">
+   
+  
     <app-sidenav></app-sidenav>
+
   </mat-sidenav>
-<mat-sidenav-content class="content">
-  <router-outlet></router-outlet>
-</mat-sidenav-content>
+
+
+    <mat-sidenav-content class="content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+
+
 </mat-sidenav-container>
+
+

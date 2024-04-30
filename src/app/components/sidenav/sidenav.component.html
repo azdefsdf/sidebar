@@ -1,7 +1,6 @@
-
-    <mat-nav-list class="list-nav">
-      <a mat-list-item *ngFor="let item of menuItems()" class="item-list" [routerLink]="item.route">
-        <mat-icon matListItemIcon class="sidenav-icon">{{ item.icon }}</mat-icon>
-        <span matListItemTitle class="sidenav-item-text">{{ item.label }}</span>
-      </a>
-    </mat-nav-list>
+<mat-nav-list class="list-nav">
+  <a mat-list-item *ngFor="let item of menuItems()" class="item-list" [routerLink]="item.route">
+    <mat-icon matListItemIcon class="sidenav-icon">{{ item.icon }}</mat-icon>
+    <span matListItemTitle class="sidenav-item-text">{{ item.label }}</span>
+  </a>
+</mat-nav-list>

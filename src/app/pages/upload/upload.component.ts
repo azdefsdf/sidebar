@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UploadService } from '../../upload.service';
-import {  Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { NgIf, NgFor } from '@angular/common';
-import { MySharedComponent } from '../../my-shared/my-shared.component';
 import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -16,8 +15,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDividerModule } from '@angular/material/divider';
 import { DatabaseService } from '../../database.service';
 import { Data } from '../../data';
 import { Invoice } from '../../Invoice';
@@ -33,7 +32,6 @@ import { Document } from '../../Document';
     PdfViewerModule,
     NgFor,
     RouterModule,
-    MySharedComponent,
     HttpClientModule,
     MatRadioModule,
     MatCardModule,
@@ -50,8 +48,8 @@ import { Document } from '../../Document';
     MatTabsModule,
     MatTooltipModule,
     MatDividerModule,
-    
-    
+
+
   ],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.css'
@@ -85,7 +83,7 @@ export class UploadComponent implements OnInit {
     private sanitizer: DomSanitizer,
   ) { }
 
- 
+
 
   ngOnInit() {
 
@@ -116,10 +114,10 @@ export class UploadComponent implements OnInit {
     }
   }
 
-  goToInvoiceList(){
+  goToInvoiceList() {
     this.router.navigate(['/done']);
   }
-  goToInvoiceLists(){
+  goToInvoiceLists() {
     this.router.navigate(['/progress']);
   }
 
@@ -160,79 +158,79 @@ export class UploadComponent implements OnInit {
 
 
   callBackendPdfFunction() {
-    
-		const formDatas = new FormData();
-		for (const file of this.selectedFiles) {
-		  formDatas.append('images', file);
-		}
-		// Call the backend function to fetch PDF data
-		this.uploadService.fetchPdfData(formDatas).subscribe(
-		  response => {
-			this.responseDataPdf = response;
-      this.responseDocumentId = response.filename;
-      this.uploadService.setDocumentId ( response.filename);
 
-			console.log(response);
-			// Show a message in the specified section
-      console.log(this.responseDocumentId);
+    const formDatas = new FormData();
+    for (const file of this.selectedFiles) {
+      formDatas.append('images', file);
+    }
+    // Call the backend function to fetch PDF data
+    this.uploadService.fetchPdfData(formDatas).subscribe(
+      response => {
+        this.responseDataPdf = response;
+        this.responseDocumentId = response.filename;
+        this.uploadService.setDocumentId(response.filename);
 
-      // Decode the base64 string
-      const binaryData = atob(this.responseDataPdf.pdfData);
-      // Create a Blob from the binary data
-      const arrayBuffer = new ArrayBuffer(binaryData.length);
-      const uint8Array = new Uint8Array(arrayBuffer);
-      for (let i = 0; i < binaryData.length; i++) {
-        uint8Array[i] = binaryData.charCodeAt(i);
-      }
-      const blob = new Blob([uint8Array], { type: 'application/pdf' });
-      // Generate a URL for the Blob and sanitize it
-      const url = URL.createObjectURL(blob);
-      this.pdfData = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+        console.log(response);
+        // Show a message in the specified section
+        console.log(this.responseDocumentId);
 
-
-		  },
-		  error=> {
-			console.error('Error calling backend function:', error);
-			// Handle errors here
-		  }
-		);
-	  }
-
-
-    validateDocument(): void {
-      const document = new Document(this.uploadService.getDocumentId(),'Done'); // Create a new document instance
-      
-      this.uploadService.validateDocument(document).subscribe(
-        (response) => {
-
-          console.log('Document validated successfully:', response);
-          this.saveInvoice(); // Proceed to save the invoice after validation
-          this.goToInvoiceList();
-        },
-        (error) => {
-          console.error('Error validating document:', error);
+        // Decode the base64 string
+        const binaryData = atob(this.responseDataPdf.pdfData);
+        // Create a Blob from the binary data
+        const arrayBuffer = new ArrayBuffer(binaryData.length);
+        const uint8Array = new Uint8Array(arrayBuffer);
+        for (let i = 0; i < binaryData.length; i++) {
+          uint8Array[i] = binaryData.charCodeAt(i);
         }
-      );
-    }
-    
+        const blob = new Blob([uint8Array], { type: 'application/pdf' });
+        // Generate a URL for the Blob and sanitize it
+        const url = URL.createObjectURL(blob);
+        this.pdfData = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
-// Method to reject a document
-rejectDocument(): void {
-  const document = new Document(this.uploadService.getDocumentId(),'Waiting'); // Create a new document instance
-  
-  this.uploadService.rejectDocument(document).subscribe(
-    (response) => {
 
-      console.log('Document Rejected successfully:', response);
-      this.saveInvoice(); // Proceed to save the invoice after rejection
-      this.goToInvoiceLists();
+      },
+      error => {
+        console.error('Error calling backend function:', error);
+        // Handle errors here
+      }
+    );
+  }
 
-    },
-    (error) => {
-      console.error('Error Rejecting document:', error);
-    }
-  );
-}
+
+  validateDocument(): void {
+    const document = new Document(this.uploadService.getDocumentId(), 'Done'); // Create a new document instance
+
+    this.uploadService.validateDocument(document).subscribe(
+      (response) => {
+
+        console.log('Document validated successfully:', response);
+        this.saveInvoice(); // Proceed to save the invoice after validation
+        this.goToInvoiceList();
+      },
+      (error) => {
+        console.error('Error validating document:', error);
+      }
+    );
+  }
+
+
+  // Method to reject a document
+  rejectDocument(): void {
+    const document = new Document(this.uploadService.getDocumentId(), 'Waiting'); // Create a new document instance
+
+    this.uploadService.rejectDocument(document).subscribe(
+      (response) => {
+
+        console.log('Document Rejected successfully:', response);
+        this.saveInvoice(); // Proceed to save the invoice after rejection
+        this.goToInvoiceLists();
+
+      },
+      (error) => {
+        console.error('Error Rejecting document:', error);
+      }
+    );
+  }
 
 
 

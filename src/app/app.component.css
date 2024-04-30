@@ -121,15 +121,16 @@
 
 
 mat-toolbar {
-  justify-content: center;
-  background-color: whitesmoke;
   color: black;
   position: relative;
   z-index: 5;
+  display: flex;
+  justify-content: space-between; /* Align items to the start and end of the toolbar */
+  align-items: center; /* Center items vertically */
 }
 
 .content {
-  padding: 24px;
+  padding: 1px;
 }
 
 mat-sidenav-container {

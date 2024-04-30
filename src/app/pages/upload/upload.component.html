@@ -153,16 +153,18 @@
 
 
     </div>
-    <mat-toolbar color="primary">
-        <div class="button-container">
-            <button mat-raised-button color="primary" type="submit" matTooltip="Valid information" class="styled-button" (click)="validateDocument()">
-                <mat-icon>check</mat-icon>
-                Validate
-              </button>
-            <button mat-raised-button color="warn" type="submit" matTooltip="Reject Document" class="styled-button" (click)="rejectDocument()">
-                <mat-icon>close</mat-icon>
-                Reject
-            </button>
-        </div>
-    </mat-toolbar>
+
+
+        <mat-toolbar color="primary" >
+            <div class="button-container">
+                <button mat-raised-button color="primary" type="submit" matTooltip="Valid information" class="styled-button" (click)="validateDocument()">
+                    <mat-icon>check</mat-icon>
+                    Validate
+                  </button>
+                <button mat-raised-button color="warn" type="submit" matTooltip="Reject Document" class="styled-button" (click)="rejectDocument()">
+                    <mat-icon>close</mat-icon>
+                    Reject
+                </button>
+            </div>
+        </mat-toolbar>
 </main>

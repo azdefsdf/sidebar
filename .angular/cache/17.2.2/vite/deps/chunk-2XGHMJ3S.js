@@ -2844,6 +2844,47 @@ var TimeoutError = createErrorClass(function(_super) {
     this.info = info;
   };
 });
+function timeout(config2, schedulerArg) {
+  var _a = isValidDate(config2) ? { first: config2 } : typeof config2 === "number" ? { each: config2 } : config2, first2 = _a.first, each = _a.each, _b = _a.with, _with = _b === void 0 ? timeoutErrorFactory : _b, _c = _a.scheduler, scheduler = _c === void 0 ? schedulerArg !== null && schedulerArg !== void 0 ? schedulerArg : asyncScheduler : _c, _d = _a.meta, meta = _d === void 0 ? null : _d;
+  if (first2 == null && each == null) {
+    throw new TypeError("No timeout provided.");
+  }
+  return operate(function(source, subscriber) {
+    var originalSourceSubscription;
+    var timerSubscription;
+    var lastValue = null;
+    var seen = 0;
+    var startTimer = function(delay2) {
+      timerSubscription = executeSchedule(subscriber, scheduler, function() {
+        try {
+          originalSourceSubscription.unsubscribe();
+          innerFrom(_with({
+            meta,
+            lastValue,
+            seen
+          })).subscribe(subscriber);
+        } catch (err) {
+          subscriber.error(err);
+        }
+      }, delay2);
+    };
+    originalSourceSubscription = source.subscribe(createOperatorSubscriber(subscriber, function(value) {
+      timerSubscription === null || timerSubscription === void 0 ? void 0 : timerSubscription.unsubscribe();
+      seen++;
+      subscriber.next(lastValue = value);
+      each > 0 && startTimer(each);
+    }, void 0, void 0, function() {
+      if (!(timerSubscription === null || timerSubscription === void 0 ? void 0 : timerSubscription.closed)) {
+        timerSubscription === null || timerSubscription === void 0 ? void 0 : timerSubscription.unsubscribe();
+      }
+      lastValue = null;
+    }));
+    !seen && startTimer(first2 != null ? typeof first2 === "number" ? first2 : +first2 - scheduler.now() : each);
+  });
+}
+function timeoutErrorFactory(info) {
+  throw new TimeoutError(info);
+}
 
 // node_modules/rxjs/dist/esm5/internal/operators/map.js
 function map(project, thisArg) {
@@ -3222,6 +3263,9 @@ var NEVER = new Observable(noop);
 
 // node_modules/rxjs/dist/esm5/internal/util/argsOrArgArray.js
 var isArray3 = Array.isArray;
+function argsOrArgArray(args) {
+  return args.length === 1 && isArray3(args[0]) ? args[0] : args;
+}
 
 // node_modules/rxjs/dist/esm5/internal/operators/filter.js
 function filter(predicate, thisArg) {
@@ -3231,6 +3275,35 @@ function filter(predicate, thisArg) {
       return predicate.call(thisArg, value, index++) && subscriber.next(value);
     }));
   });
+}
+
+// node_modules/rxjs/dist/esm5/internal/observable/race.js
+function race() {
+  var sources = [];
+  for (var _i = 0; _i < arguments.length; _i++) {
+    sources[_i] = arguments[_i];
+  }
+  sources = argsOrArgArray(sources);
+  return sources.length === 1 ? innerFrom(sources[0]) : new Observable(raceInit(sources));
+}
+function raceInit(sources) {
+  return function(subscriber) {
+    var subscriptions = [];
+    var _loop_1 = function(i2) {
+      subscriptions.push(innerFrom(sources[i2]).subscribe(createOperatorSubscriber(subscriber, function(value) {
+        if (subscriptions) {
+          for (var s = 0; s < subscriptions.length; s++) {
+            s !== i2 && subscriptions[s].unsubscribe();
+          }
+          subscriptions = null;
+        }
+        subscriber.next(value);
+      })));
+    };
+    for (var i = 0; subscriptions && !subscriber.closed && i < sources.length; i++) {
+      _loop_1(i);
+    }
+  };
 }
 
 // node_modules/rxjs/dist/esm5/internal/operators/audit.js
@@ -3401,10 +3474,40 @@ function take(count2) {
   });
 }
 
+// node_modules/rxjs/dist/esm5/internal/operators/ignoreElements.js
+function ignoreElements() {
+  return operate(function(source, subscriber) {
+    source.subscribe(createOperatorSubscriber(subscriber, noop));
+  });
+}
+
 // node_modules/rxjs/dist/esm5/internal/operators/mapTo.js
 function mapTo(value) {
   return map(function() {
     return value;
+  });
+}
+
+// node_modules/rxjs/dist/esm5/internal/operators/delayWhen.js
+function delayWhen(delayDurationSelector, subscriptionDelay) {
+  if (subscriptionDelay) {
+    return function(source) {
+      return concat(subscriptionDelay.pipe(take(1), ignoreElements()), source.pipe(delayWhen(delayDurationSelector)));
+    };
+  }
+  return mergeMap(function(value, index) {
+    return innerFrom(delayDurationSelector(value, index)).pipe(take(1), mapTo(value));
+  });
+}
+
+// node_modules/rxjs/dist/esm5/internal/operators/delay.js
+function delay(due, scheduler) {
+  if (scheduler === void 0) {
+    scheduler = asyncScheduler;
+  }
+  var duration = timer(due, scheduler);
+  return delayWhen(function() {
+    return duration;
   });
 }
 
@@ -3743,6 +3846,60 @@ function tap(observerOrNext, error, complete) {
       (_b = tapObserver.finalize) === null || _b === void 0 ? void 0 : _b.call(tapObserver);
     }));
   }) : identity;
+}
+
+// node_modules/rxjs/dist/esm5/internal/operators/throttle.js
+function throttle(durationSelector, config2) {
+  return operate(function(source, subscriber) {
+    var _a = config2 !== null && config2 !== void 0 ? config2 : {}, _b = _a.leading, leading = _b === void 0 ? true : _b, _c = _a.trailing, trailing = _c === void 0 ? false : _c;
+    var hasValue = false;
+    var sendValue = null;
+    var throttled = null;
+    var isComplete = false;
+    var endThrottling = function() {
+      throttled === null || throttled === void 0 ? void 0 : throttled.unsubscribe();
+      throttled = null;
+      if (trailing) {
+        send();
+        isComplete && subscriber.complete();
+      }
+    };
+    var cleanupThrottling = function() {
+      throttled = null;
+      isComplete && subscriber.complete();
+    };
+    var startThrottle = function(value) {
+      return throttled = innerFrom(durationSelector(value)).subscribe(createOperatorSubscriber(subscriber, endThrottling, cleanupThrottling));
+    };
+    var send = function() {
+      if (hasValue) {
+        hasValue = false;
+        var value = sendValue;
+        sendValue = null;
+        subscriber.next(value);
+        !isComplete && startThrottle(value);
+      }
+    };
+    source.subscribe(createOperatorSubscriber(subscriber, function(value) {
+      hasValue = true;
+      sendValue = value;
+      !(throttled && !throttled.closed) && (leading ? send() : startThrottle(value));
+    }, function() {
+      isComplete = true;
+      !(trailing && hasValue && throttled && !throttled.closed) && subscriber.complete();
+    }));
+  });
+}
+
+// node_modules/rxjs/dist/esm5/internal/operators/throttleTime.js
+function throttleTime(duration, scheduler, config2) {
+  if (scheduler === void 0) {
+    scheduler = asyncScheduler;
+  }
+  var duration$ = timer(duration, scheduler);
+  return throttle(function() {
+    return duration$;
+  }, config2);
 }
 
 // node_modules/@angular/core/fesm2022/core.mjs
@@ -24240,6 +24397,7 @@ export {
   throwError,
   isObservable,
   EmptyError,
+  timeout,
   map,
   combineLatest,
   mergeMap,
@@ -24251,6 +24409,7 @@ export {
   timer,
   merge,
   filter,
+  race,
   auditTime,
   catchError,
   concatMap,
@@ -24258,6 +24417,7 @@ export {
   defaultIfEmpty,
   take,
   mapTo,
+  delay,
   distinctUntilChanged,
   finalize,
   first,
@@ -24273,6 +24433,7 @@ export {
   takeUntil,
   takeWhile,
   tap,
+  throttleTime,
   XSS_SECURITY_URL,
   RuntimeError,
   formatRuntimeError,
@@ -24755,4 +24916,4 @@ export {
    * found in the LICENSE file at https://angular.io/license
    *)
 */
-//# sourceMappingURL=chunk-F6M5Y3RI.js.map
+//# sourceMappingURL=chunk-2XGHMJ3S.js.map

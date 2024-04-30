@@ -7,7 +7,7 @@ import {
   of,
   setClassMetadata,
   ɵɵdefineInjectable
-} from "./chunk-F6M5Y3RI.js";
+} from "./chunk-2XGHMJ3S.js";
 
 // node_modules/@angular/cdk/fesm2022/collections.mjs
 var DataSource = class {
@@ -406,4 +406,4 @@ export {
   SelectionModel,
   UniqueSelectionDispatcher
 };
-//# sourceMappingURL=chunk-7JE6AGXR.js.map
+//# sourceMappingURL=chunk-IQGYRQZV.js.map
