@@ -18,9 +18,9 @@ export class DoneService {
 
 
     // Method to fetch documents with status "done" from the backend
-    getCompletedDocuments(): Observable<Document[]> {
-      return this.http.get<Document[]>(`${this.apiUrl}/documents/completed`);
-    }
+   getCompletedDocuments(): Observable<Document[]> {
+     return this.http.get<Document[]>(`${this.apiUrl}/documents/completed`);
+   }
     consultDocument(documentId: string,id:number): Observable<any> {
       const params = new HttpParams().set('documentId', documentId)
                                       .set('id',id);

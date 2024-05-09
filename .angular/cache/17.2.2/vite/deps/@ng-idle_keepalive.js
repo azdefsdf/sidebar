@@ -1,12 +1,12 @@
 import {
   KeepaliveSvc,
   NgIdleModule
-} from "./chunk-5RGQL6OK.js";
+} from "./chunk-7MBTTDI7.js";
 import {
   HttpClient,
   HttpRequest
-} from "./chunk-PQO7AX6Q.js";
-import "./chunk-DROIQS4L.js";
+} from "./chunk-M3PNNGLT.js";
+import "./chunk-BHPUX22R.js";
 import {
   EventEmitter,
   Injectable,
@@ -17,7 +17,8 @@ import {
   ɵɵdefineInjector,
   ɵɵdefineNgModule,
   ɵɵinject
-} from "./chunk-2XGHMJ3S.js";
+} from "./chunk-BN5PC6WZ.js";
+import "./chunk-PZQZAEDH.js";
 
 // node_modules/@ng-idle/keepalive/fesm2022/ng-idle-keepalive.mjs
 var _Keepalive = class _Keepalive extends KeepaliveSvc {

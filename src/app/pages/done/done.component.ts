@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ChangeDetectorRef, ViewChild } from '@angular/core';
 import { DoneService } from '../../done.service';
 import { Data } from '../../data';
 import { Invoice } from '../../Invoice';
@@ -24,13 +24,16 @@ import {MatDividerModule} from '@angular/material/divider';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
-
+import { CommonModule } from '@angular/common';
+import { MatPaginator } from '@angular/material/paginator';
 
 
 @Component({
   selector: 'app-done',
   standalone: true,
-  imports: [HttpClientModule, MatTableModule, DatePipe, MatButtonModule,
+  imports: [MatPaginator,
+
+    HttpClientModule, MatTableModule, DatePipe, MatButtonModule,
     MatToolbarModule,
     MatTabsModule,
     MatIconModule,
@@ -62,6 +65,8 @@ export class DoneComponent implements OnInit {
   completedDocuments: Document[] = [];
   displayedColumns: string[] = ['id', 'documentId', 'status', 'userId', 'createdAt', 'updatedAt', 'action'];
   
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
 
   invoiceForm!: FormGroup; // Declare the FormGroup
   selectedId!: number;
@@ -84,7 +89,8 @@ export class DoneComponent implements OnInit {
     private progressService: ProgressService,
     private router: Router,
     private sanitizer: DomSanitizer,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    private refresh: ChangeDetectorRef,
     ) { }
 
   ngOnInit(): void {
@@ -98,7 +104,11 @@ export class DoneComponent implements OnInit {
           totalAmount: new FormControl('', [Validators.required, Validators.min(0)]), // Assuming total amount is non-negative
           company: new FormControl('', [Validators.required])
         });
+
+        
   }
+
+  
   goToInvoiceList() {
     this.router.navigate(['/done']);
   }
@@ -157,7 +167,17 @@ export class DoneComponent implements OnInit {
     );
   }
   
+onPageChange(event: any) {
+  const pageIndex = event.pageIndex;
+  const pageSize = event.pageSize;
 
+  const startIndex = pageIndex * pageSize; // Calculate starting index for the current page
+  const endIndex = startIndex + pageSize; // Calculate ending index for the current page
+
+  // Slice the data source array to extract data for the current page
+  this.completedDocuments = this.completedDocuments.slice(startIndex, endIndex);
+}
+  
 
 
 }

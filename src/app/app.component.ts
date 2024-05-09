@@ -17,13 +17,12 @@ import { AccountService } from './account.service';
 import { Subject } from 'rxjs'; // Import for unsubscribe
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
-import { MatMenuModule } from '@angular/material/menu';  // Import MatMenuModule
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';  // Import MatMenuModule
 import { createPopper } from '@popperjs/core';
 import {KeycloakService} from "keycloak-angular";
-import {KeycloakProfile} from "keycloak-js";
+import keycloak, {KeycloakProfile} from "keycloak-js";
 import { OAuthService } from 'angular-oauth2-oidc';
 import { HttpClient } from '@angular/common/http';
-
 
 @Component({
     selector: 'app-root',
@@ -31,47 +30,70 @@ import { HttpClient } from '@angular/common/http';
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
     providers: [FormBuilder, Validators, AccountService, KeycloakService, Idle, Keepalive,KeycloakAngularModule], // Add Keepalive here
-    imports: [MatMenuModule ,MatIconModule,KeycloakAngularModule,PdfViewerModule,CommonModule, RouterOutlet, MatToolbarModule, MatTabsModule, MatSlideToggleModule, MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatSidenav, SidenavComponent]
+    imports: [MatMenuTrigger,MatMenuModule ,MatIconModule,KeycloakAngularModule,PdfViewerModule,CommonModule, RouterOutlet, MatToolbarModule, MatTabsModule, MatSlideToggleModule, MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatSidenav, SidenavComponent]
 })
 
 
 
-export class AppComponent implements OnInit  {
-  title = 'sidebar';
-  isLoggedIn!:false;
-  helloText = '';
+export class AppComponent implements OnInit {
+  public isLoggedIn = false;
+  public userProfile: KeycloakProfile | null = null;
 
-  public profile! : KeycloakProfile;
-  constructor(public keycloakService : KeycloakService
 
-  ) {
+  urls = { 
+    cns: 'http://localhost:4200/upload' // Verify the shown ports
   }
 
-  async ngOnInit() {
-    if (await this.keycloakService.isLoggedIn()) {
-      this.profile = await this.keycloakService.loadUserProfile();
+
+  constructor(private keycloak: KeycloakService) {}
+
+  public async ngOnInit() {
+    this.isLoggedIn = await this.keycloak.isLoggedIn();
+
+    if (this.isLoggedIn) {
+      this.userProfile = await this.keycloak.loadUserProfile();
     }
+
+    this.keycloak.init({
+      config: {
+        url: 'http://localhost:8080', // URL of the Keycloak server
+        realm: 'banking-app', // Realm to be used in Keycloak
+        clientId: 'banking-app' // Client ID for the application in Keycloak
+      },
+      // Options for Keycloak initialization
+      initOptions: {
+        onLoad: 'check-sso', // Action to take on load
+        silentCheckSsoRedirectUri:
+          window.location.origin + '/assets/silent-check-sso.html' // URI for silent SSO checks
+      },
+      // Enables Bearer interceptor
+      enableBearerInterceptor: true,
+      // Prefix for the Bearer token
+      bearerPrefix: 'Bearer',
+      // URLs excluded from Bearer token addition (empty by default)
+      //bearerExcludedUrls: []
+    });
+
   }
 
+  public login() {
+    this.keycloak.login({
+      acr: {
+        values: ['normal'],
+        essential: true
+      }
+    });
+  }
 
-
-  async handleLogin() {
+  
+  async logout() {
     try {
-      await this.keycloakService.login({
-        redirectUri: window.location.origin
-      });
+      console.log("log",this.urls.cns);
+      await this.keycloak.logout(this.urls.cns);
     } catch (error) {
-      console.error("Error logging in:", error);
+      console.error('Error during logout:', error);
     }
   }
+  
 
-  handleLogout(){
-    this.keycloakService.logout(window.location.origin);
-  }
- 
 }
-
-
-
-
-
