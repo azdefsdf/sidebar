@@ -10,7 +10,7 @@ import { Document } from './Document';
   providedIn: 'root'
 })
 export class DoneService {
-  private apiUrl = 'http://192.168.36.128:8081/api/v1'; // Remove /data from the URL
+  private apiUrl = 'http://192.168.195.128:8081/api/v1'; // Remove /data from the URL
 
   idDocument : any;
   statusDocument : any;

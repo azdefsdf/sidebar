@@ -299,3 +299,46 @@ main {
 }
 
 
+.table-responsive {
+  overflow-x: auto;
+}
+
+td.mat-cell {
+  padding: 16px;
+}
+
+th.mat-header-cell:first-of-type,
+td.mat-cell:first-of-type,
+td.mat-footer-cell:first-of-type {
+  padding: 16px;
+}
+
+th.mat-header-cell {
+  padding: 16px;
+}
+
+.mat-header-cell {
+  font-size: 14px;
+}
+
+.badge {
+  padding: 3px 12px;
+  font-size: 12px;
+  color: #ffffff;
+}
+
+.badge-info {
+  background-color: #17a2b8; /* Replace $info with the actual color value */
+}
+
+.badge-primary {
+  background-color: #007bff; /* Replace $primary with the actual color value */
+}
+
+.badge-danger {
+  background-color: #dc3545; /* Replace $danger with the actual color value */
+}
+
+.badge-success {
+  background-color: #28a745; /* Replace $success with the actual color value */
+}

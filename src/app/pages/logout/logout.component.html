@@ -1,1 +1,81 @@
-<p>logout works!</p>
+<form class="form-style " (ngSubmit)="onSubmit()" #uploadForm="ngForm">
+  <div class="title">
+    <h2 style="text-align: center;padding: 10px;" class="form-title">Les informations de Client</h2>
+  </div>
+  <table class="example-full-width" cellspacing="0">
+    <tbody>
+      <tr>
+        <td style="padding: 10px">
+          <mat-form-field  class="example-full-width">
+            <mat-label>Nom </mat-label>
+            <input matInput placeholder="Ex. Sam" id="nom" name="nom" [(ngModel)]="nom">
+          </mat-form-field>
+        </td>
+        <td style="padding: 10px">
+          <mat-form-field class="example-full-width">
+            <mat-label>Prénom</mat-label>
+            <input matInput placeholder="Ex. Verto" id="prenom" name="prenom" [(ngModel)]="prenom">
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 10px">
+          <mat-form-field class="example-full-width">
+            <mat-label>Date de délivré</mat-label>
+            <input matInput [matDatepicker]="picker" id="dateDelivre" name="dateDelivre" [(ngModel)]="dateDelivre">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </td>
+        <td style="padding: 10px">
+          <mat-form-field class="example-full-width">
+            <mat-label>Date d'expiration</mat-label>
+            <input matInput [matDatepicker]="picker1" id="dateExpiration" name="dateExpiration" [(ngModel)]="dateExpiration">
+            <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 10px">
+          <mat-form-field class="example-full-width">
+            <mat-label>Date de naissance</mat-label>
+            <input matInput [matDatepicker]="picker2" id="dateNaissance" name="dateNaissance" [(ngModel)]="dateNaissance">
+            <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </td>
+        <td style="padding: 10px">
+          <mat-form-field class="example-full-width">
+            <mat-label>Sex</mat-label>
+            <input matInput placeholder="Ex. F-M" id="sex" name="sex" [(ngModel)]="sex">
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 10px">
+          <mat-form-field class="example-full-width">
+            <mat-label>Numéro Passeport </mat-label>
+            <input matInput placeholder="Ex. 123456" id="numeroPasseport" name="numeroPasseport" [(ngModel)]="numeroPasseport">
+          </mat-form-field>
+        </td>
+        <td style="padding: 10px">
+          <mat-form-field class="invoice-field">
+            <mat-label>Pays</mat-label>
+            <input matInput placeholder="Ex. Malta" id="pays" name="pays" [(ngModel)]="pays">
+          </mat-form-field>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <div class="cin-image-upload">
+    <label for="file" class="cin-image-upload__label">
+      <span class="cin-image-upload__label-text">Sélectionnez l'image de CIN du client :</span>
+      <mat-icon matSuffix class="cin-image-upload__icon">attach_file</mat-icon>
+    </label>
+    <input type="file" id="file" name="file" (change)="onFileSelected($event)" multiple class="cin-image-upload__input">
+  </div>
+  
+  <button class="form-style1 btn btn-primary w-100"  >Valid</button>
+</form>

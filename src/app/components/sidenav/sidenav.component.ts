@@ -56,7 +56,7 @@ export class SidenavComponent implements OnInit{
     },
     {
       icon: 'logout',
-      label: 'Logout',
+      label: 'Insert Data',
       route: 'logout'
     }
   ])

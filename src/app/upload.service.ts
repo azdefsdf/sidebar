@@ -9,10 +9,10 @@ import { Document } from './Document';
   providedIn: 'root'
 })
 export class UploadService {
-  private apiUrl = 'http://192.168.36.128:8081/api/v1'; // Remove /data from the URL
+  private apiUrl = 'http://192.168.195.128:8081/api/v1'; // Remove /data from the URL
   //private baseURL = "http://192.168.36.128:8080/save";
 
-  private baseURL = "http://192.168.36.128:8081/api/v1/invoices";
+  private baseURL = "http://192.168.195.128:8081/api/v1/invoices";
   idDocument : any;
   statusDocument : any;
   constructor(private http: HttpClient) { }
